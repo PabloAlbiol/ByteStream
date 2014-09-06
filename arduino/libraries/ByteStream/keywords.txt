@@ -1,0 +1,5 @@
+ByteStream	KEYWORD1
+getBuf	KEYWORD2
+getCapacity	KEYWORD2
+getLength	KEYWORD2
+setBuf	KEYWORD2
