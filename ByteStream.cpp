@@ -1,3 +1,27 @@
+/*==============================================================================
+
+    Copyright (C) 2014, 2015 Pablo Albiol http://github.com/PabloAlbiol
+
+    ByteStream is free software: you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation, either
+    version 3 of the License, or (at your option) any later version.
+
+    ByteStream is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with ByteStream.  If not, see <http://www.gnu.org/licenses/>.
+
+==============================================================================*/
+
+/*
+    ByteStream is a C++ library for encoding and decoding different data types into bytes
+    http://github.com/PabloAlbiol/ByteStream
+*/
+
 #include "ByteStream.h"
 #include <iostream>
 #include <cstring>
@@ -132,7 +156,7 @@ unsigned int ByteStream::getLength()
 
 unsigned char ByteStream::remove()
 {
-    unsigned char byte = 0; // Not the best solution
+    unsigned char byte = 0; // Not the best solution, it returns a 0 if length = 0
     if (length > 0)
     {
         byte = buffer[index];
@@ -321,128 +345,149 @@ ByteStream &ByteStream::operator<<(const char string[])
     return *this;
 }
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<bool> array)
+ByteStream &ByteStream::operator<<(const ByteStream::Array array)
 {
-    for (unsigned int i = 0; i < array.lengthArray; i++)
+    switch (array.type)
     {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_BOOL:
+        {
+            bool *pointer = (bool *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<unsigned char> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_UCHAR:
+        {
+            unsigned char *pointer = (unsigned char *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<char> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_CHAR:
+        {
+            char *pointer = (char *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<unsigned short int> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_USINT:
+        {
+            unsigned short int *pointer = (unsigned short int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<short int> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_SINT:
+        {
+            short int *pointer = (short int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<unsigned int> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_UINT:
+        {
+            unsigned int *pointer = (unsigned int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<int> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_INT:
+        {
+            int *pointer = (int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<unsigned long int> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_ULINT:
+        {
+            unsigned long int *pointer = (unsigned long int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<long int> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_LINT:
+        {
+            long int *pointer = (long int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<unsigned long long int> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_ULLINT:
+        {
+            unsigned long long int *pointer = (unsigned long long int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<long long int> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_LLINT:
+        {
+            long long int *pointer = (long long int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<float> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_FLOAT:
+        {
+            float *pointer = (float *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<double> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_DOUBLE:
+        {
+            double *pointer = (double *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator<<(const ByteStream::Array<long double> array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this << array.bufferArray[i];
+        case BS_LDOUBLE:
+        {
+            long double *pointer = (long double *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this << pointer[i];
+            }
+        }
+        break;
     }
     return *this;
 }
@@ -602,128 +647,149 @@ ByteStream &ByteStream::operator>>(const char string[])
     return *this;
 }
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<bool> &array)
+ByteStream &ByteStream::operator>>(const ByteStream::Array &array)
 {
-    for (unsigned int i = 0; i < array.lengthArray; i++)
+    switch (array.type)
     {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_BOOL:
+        {
+            bool *pointer = (bool *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<unsigned char> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_UCHAR:
+        {
+            unsigned char *pointer = (unsigned char *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<char> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_CHAR:
+        {
+            char *pointer = (char *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<unsigned short int> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_USINT:
+        {
+            unsigned short int *pointer = (unsigned short int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<short int> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_SINT:
+        {
+            short int *pointer = (short int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<unsigned int> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_UINT:
+        {
+            unsigned int *pointer = (unsigned int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<int> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_INT:
+        {
+            int *pointer = (int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<unsigned long int> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_ULINT:
+        {
+            unsigned long int *pointer = (unsigned long int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<long int> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_LINT:
+        {
+            long int *pointer = (long int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<unsigned long long int> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_ULLINT:
+        {
+            unsigned long long int *pointer = (unsigned long long int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<long long int> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_LLINT:
+        {
+            long long int *pointer = (long long int *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<float> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_FLOAT:
+        {
+            float *pointer = (float *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<double> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
-    }
-    return *this;
-}
+        case BS_DOUBLE:
+        {
+            double *pointer = (double *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
 
-ByteStream &ByteStream::operator>>(const ByteStream::Array<long double> &array)
-{
-    for (unsigned int i = 0; i < array.lengthArray; i++)
-    {
-        *this >> array.bufferArray[i];
+        case BS_LDOUBLE:
+        {
+            long double *pointer = (long double *)array.bufferArray;
+            for (unsigned int i = 0; i < array.lengthArray; i++)
+            {
+                *this >> pointer[i];
+            }
+        }
+        break;
     }
     return *this;
 }
@@ -731,86 +797,128 @@ ByteStream &ByteStream::operator>>(const ByteStream::Array<long double> &array)
 
 // Operator () overloading
 
-ByteStream::Array<bool> ByteStream::operator()(bool buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(bool buf[], const unsigned int size)
 {
-    Array<bool> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_BOOL;
+    return structArray;
 }
 
-ByteStream::Array<unsigned char> ByteStream::operator()(unsigned char buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(unsigned char buf[], const unsigned int size)
 {
-    Array<unsigned char> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_UCHAR;
+    return structArray;
 }
 
-ByteStream::Array<char> ByteStream::operator()(char buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(char buf[], const unsigned int size)
 {
-    Array<char> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_CHAR;
+    return structArray;
 }
 
-ByteStream::Array<unsigned short int> ByteStream::operator()(unsigned short int buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(unsigned short int buf[], const unsigned int size)
 {
-    Array<unsigned short int> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_USINT;
+    return structArray;
 }
 
-ByteStream::Array<short int> ByteStream::operator()(short int buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(short int buf[], const unsigned int size)
 {
-    Array<short int> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_SINT;
+    return structArray;
 }
 
-ByteStream::Array<unsigned int> ByteStream::operator()(unsigned int buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(unsigned int buf[], const unsigned int size)
 {
-    Array<unsigned int> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_UINT;
+    return structArray;
 }
 
-ByteStream::Array<int> ByteStream::operator()(int buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(int buf[], const unsigned int size)
 {
-    Array<int> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_INT;
+    return structArray;
 }
 
-ByteStream::Array<unsigned long int> ByteStream::operator()(unsigned long int buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(unsigned long int buf[], const unsigned int size)
 {
-    Array<unsigned long int> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_ULINT;
+    return structArray;
 }
 
-ByteStream::Array<long int> ByteStream::operator()(long int buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(long int buf[], const unsigned int size)
 {
-    Array<long int> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_LINT;
+    return structArray;
 }
 
-ByteStream::Array<unsigned long long int> ByteStream::operator()(unsigned long long int buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(unsigned long long int buf[], const unsigned int size)
 {
-    Array<unsigned long long int> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_ULLINT;
+    return structArray;
 }
 
-ByteStream::Array<long long int> ByteStream::operator()(long long int buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(long long int buf[], const unsigned int size)
 {
-    Array<long long int> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_LLINT;
+    return structArray;
 }
 
-ByteStream::Array<float> ByteStream::operator()(float buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(float buf[], const unsigned int size)
 {
-    Array<float> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_FLOAT;
+    return structArray;
 }
 
-ByteStream::Array<double> ByteStream::operator()(double buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(double buf[], const unsigned int size)
 {
-    Array<double> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_DOUBLE;
+    return structArray;
 }
 
-ByteStream::Array<long double> ByteStream::operator()(long double buf[], const unsigned int size)
+ByteStream::Array ByteStream::operator()(long double buf[], const unsigned int size)
 {
-    Array<long double> array(buf, size);
-    return array;
+    Array structArray;
+    structArray.lengthArray = size;
+    structArray.bufferArray = buf;
+    structArray.type = BS_LDOUBLE;
+    return structArray;
 }

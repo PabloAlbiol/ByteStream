@@ -1,12 +1,35 @@
+/*==============================================================================
+
+    Copyright (C) 2014, 2015 Pablo Albiol http://github.com/PabloAlbiol
+
+    ByteStream is free software: you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation, either
+    version 3 of the License, or (at your option) any later version.
+
+    ByteStream is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with ByteStream.  If not, see <http://www.gnu.org/licenses/>.
+
+==============================================================================*/
+
+/*
+    ByteStream is a C++ library for encoding and decoding different data types into bytes
+    http://github.com/PabloAlbiol/ByteStream
+*/
+
 #ifndef BYTESTREAM_H
 #define BYTESTREAM_H
 
 
 class ByteStream
 {
-    // Array class forward declaration
-    template <class T>
-    class Array;
+    // Array struct forward declaration
+    struct Array;
 
 public:
     ByteStream(const unsigned int cap);
@@ -35,23 +58,8 @@ public:
     ByteStream &operator<<(const float val);
     ByteStream &operator<<(const double val);
     ByteStream &operator<<(const long double val);
-
     ByteStream &operator<<(const char string[]);
-
-    ByteStream &operator<<(const ByteStream::Array<bool> array);
-    ByteStream &operator<<(const ByteStream::Array<unsigned char> array);
-    ByteStream &operator<<(const ByteStream::Array<char> array);
-    ByteStream &operator<<(const ByteStream::Array<unsigned short int> array);
-    ByteStream &operator<<(const ByteStream::Array<short int> array);
-    ByteStream &operator<<(const ByteStream::Array<unsigned int> array);
-    ByteStream &operator<<(const ByteStream::Array<int> array);
-    ByteStream &operator<<(const ByteStream::Array<unsigned long int> array);
-    ByteStream &operator<<(const ByteStream::Array<long int> array);
-    ByteStream &operator<<(const ByteStream::Array<unsigned long long int> array);
-    ByteStream &operator<<(const ByteStream::Array<long long int> array);
-    ByteStream &operator<<(const ByteStream::Array<float> array);
-    ByteStream &operator<<(const ByteStream::Array<double> array);
-    ByteStream &operator<<(const ByteStream::Array<long double> array);
+    ByteStream &operator<<(const ByteStream::Array array);
 
     // Operator >> overloading
     ByteStream &operator>>(const bool &val);
@@ -68,39 +76,25 @@ public:
     ByteStream &operator>>(const float &val);
     ByteStream &operator>>(const double &val);
     ByteStream &operator>>(const long double &val);
-
     ByteStream &operator>>(const char string[]);
-
-    ByteStream &operator>>(const ByteStream::Array<bool> &array);
-    ByteStream &operator>>(const ByteStream::Array<unsigned char> &array);
-    ByteStream &operator>>(const ByteStream::Array<char> &array);
-    ByteStream &operator>>(const ByteStream::Array<unsigned short int> &array);
-    ByteStream &operator>>(const ByteStream::Array<short int> &array);
-    ByteStream &operator>>(const ByteStream::Array<unsigned int> &array);
-    ByteStream &operator>>(const ByteStream::Array<int> &array);
-    ByteStream &operator>>(const ByteStream::Array<unsigned long int> &array);
-    ByteStream &operator>>(const ByteStream::Array<long int> &array);
-    ByteStream &operator>>(const ByteStream::Array<unsigned long long int> &array);
-    ByteStream &operator>>(const ByteStream::Array<long long int> &array);
-    ByteStream &operator>>(const ByteStream::Array<float> &array);
-    ByteStream &operator>>(const ByteStream::Array<double> &array);
-    ByteStream &operator>>(const ByteStream::Array<long double> &array);
+    ByteStream &operator>>(const ByteStream::Array &array);
 
     // Operator () overloading
-    ByteStream::Array<bool> operator()(bool buf[], const unsigned int size);
-    ByteStream::Array<unsigned char> operator()(unsigned char buf[], const unsigned int size);
-    ByteStream::Array<char> operator()(char buf[], const unsigned int size);
-    ByteStream::Array<unsigned short int> operator()(unsigned short int buf[], const unsigned int size);
-    ByteStream::Array<short int> operator()(short int buf[], const unsigned int size);
-    ByteStream::Array<unsigned int> operator()(unsigned int buf[], const unsigned int size);
-    ByteStream::Array<int> operator()(int buf[], const unsigned int size);
-    ByteStream::Array<unsigned long int> operator()(unsigned long int buf[], const unsigned int size);
-    ByteStream::Array<long int> operator()(long int buf[], const unsigned int size);
-    ByteStream::Array<unsigned long long int> operator()(unsigned long long int buf[], const unsigned int size);
-    ByteStream::Array<long long int> operator()(long long int buf[], const unsigned int size);
-    ByteStream::Array<float> operator()(float buf[], const unsigned int size);
-    ByteStream::Array<double> operator()(double buf[], const unsigned int size);
-    ByteStream::Array<long double> operator()(long double buf[], const unsigned int size);
+    ByteStream::Array operator()(bool buf[], const unsigned int size);
+    ByteStream::Array operator()(unsigned char buf[], const unsigned int size);
+    ByteStream::Array operator()(char buf[], const unsigned int size);
+    ByteStream::Array operator()(unsigned short int buf[], const unsigned int size);
+    ByteStream::Array operator()(short int buf[], const unsigned int size);
+    ByteStream::Array operator()(unsigned int buf[], const unsigned int size);
+    ByteStream::Array operator()(int buf[], const unsigned int size);
+    ByteStream::Array operator()(unsigned long int buf[], const unsigned int size);
+    ByteStream::Array operator()(long int buf[], const unsigned int size);
+    ByteStream::Array operator()(unsigned long long int buf[], const unsigned int size);
+    ByteStream::Array operator()(long long int buf[], const unsigned int size);
+    ByteStream::Array operator()(float buf[], const unsigned int size);
+    ByteStream::Array operator()(double buf[], const unsigned int size);
+    ByteStream::Array operator()(long double buf[], const unsigned int size);
+
 
 private:
     void append(const unsigned char byte);
@@ -112,37 +106,30 @@ private:
     unsigned int index;
     unsigned int length;
 
-    // Class to store arrays and their sizes
-    template <class T>
-    class Array
+    // Structure to store arrays and their sizes
+    struct Array
     {
-    public:
-        Array(T buf[], const unsigned int size)
-        {
-            lengthArray = size;
-
-            // I don't want to store any array, just a pointer
-            bufferArray = buf;
-        }
-        Array(const Array &c) // Copy constructor. Not necessary
-        {
-            lengthArray = c.lengthArray;
-            bufferArray = c.bufferArray;
-        }
-        Array &operator=(const Array &c) // Copy assignment operator. Not necessary
-        {
-            if (this != &c)
-            {
-                lengthArray = c.lengthArray;
-                bufferArray = c.bufferArray;
-            }
-            return *this;
-        }
-        ~Array() // Destructor. Not necessary
-        {
-        }
-        T *bufferArray;
+        void *bufferArray; // I don't want to store any array, just a pointer
         unsigned int lengthArray;
+        unsigned int type;
+    };
+
+    enum BS_TYPES
+    {
+        BS_BOOL,
+        BS_UCHAR,
+        BS_CHAR,
+        BS_USINT,
+        BS_SINT,
+        BS_UINT,
+        BS_INT,
+        BS_ULINT,
+        BS_LINT,
+        BS_ULLINT,
+        BS_LLINT,
+        BS_FLOAT,
+        BS_DOUBLE,
+        BS_LDOUBLE
     };
 };
 
