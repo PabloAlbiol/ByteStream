@@ -15,13 +15,13 @@ void setup()
 
 void loop() 
 {
-  // We can write almost any kind of data type to the stream
+  // Write almost any kind of data type to the stream
   streamWrite << 'C' << 'b';
   streamWrite << 'e';
   streamWrite << 'm';
-  streamWrite << "bcde" << streamWrite(floatArray, 3) << true << i << 978.415; // We can write arrays to the stream, "streamWrite(array, size)"
+  streamWrite << "bcde" << streamWrite(floatArray, 3) << true << i << 978.415; // To write arrays to the stream, "myStream(array, size)"
   
-  // Returns the buffer and length in bytes of the stream we have written
+  // Get the stream length in bytes and assign the stream to the buf array
   length = streamWrite.getBuf(buf);
   
   Serial.write(buf, length);

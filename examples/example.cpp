@@ -23,10 +23,11 @@ int main(int argc, char *argv[])
     stream << 'C' << 'b';
     stream << 'e';
     stream << 'm';
-    stream << "bcde" << stream(floatArray1, 3) << true << i1 << 978.415; // stream(array, size) to write arrays to the stream
+    stream << "bcde" << stream(floatArray1, 3) << true << i1 << 978.415; // "myStream(array, size)" to write arrays to the stream
 
-    // Get the stream length
+    // Get the stream length in bytes and assign the stream to the buf array
     length = stream.getBuf(buf);
+
     std::cout << "Length: " << length << std::endl;
     for (unsigned int i = 0; i < length; i++)
     {
